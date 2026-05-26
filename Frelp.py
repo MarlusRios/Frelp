@@ -1,11 +1,13 @@
 import os
 from google import genai
-from FastAPI import FastAPI
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from dotenv import load_dotenv
+load_dotenv()
 
-class Resposta(BaseModel):
-    resposta: str
+class request(BaseModel):
+    problema: str
 
 with open("personalidade.txt", 'r', encoding='utf-8') as file:
     personalidade = file.read()
@@ -29,13 +31,9 @@ chat = cliente.chats.create(
     )
 )
 
-while True:
-    print()
-    user_input = input("Você: ")
-    if user_input.lower() in ["sair", "exit", "quit"]:
-        print("Encerrando a conversa. Até mais!")
-        break
+@app.post("/chat")
+def apoioEmocional(apoio: request):
+    pergunta = apoio.problema
+    resposta = chat.send_message(pergunta)
 
-    resposta = chat.send_message(user_input)
-    print("Frelp: " + resposta.text)
-    print()
+    return {"resposta": resposta}
