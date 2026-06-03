@@ -25,7 +25,7 @@ app.add_middleware(
 cliente = genai.Client();
 
 chat = cliente.chats.create(
-    model="gemini-2.5-flash",  # Uma dica: o 2.5-flash é o modelo padrão atual, super rápido para chat!
+    model="gemini-2.5-flash",
     config=genai.types.GenerateContentConfig(
         system_instruction=personalidade
     )
